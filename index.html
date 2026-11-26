@@ -929,13 +929,13 @@
         <button type="button" class="menu-toggle-btn" onclick="toggleDrawer(true)" aria-label="Paneli aç">☰</button>
         <div class="brand">
           <h1>VASİF USTANIN DÖNƏRİ</h1>
-          <p>İş saatı: 10:00 – 23:30 • Sürətli çatdırılma</p>
+          <p>İş saatı: 09:00 – 23:00 • Sürətli çatdırılma</p>
         </div>
       </div>
       <span class="status-badge open" id="statusBadge">Açıqdır</span>
     </div>
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Menyuda axtar... (məs: toyuq, limuzin, ayran)" oninput="handleSearch()" />
+      <input type="text" id="searchInput" placeholder="Menyuda axtar... (məs: toyuq, limuzin, burger, kola, fri)" oninput="handleSearch()" />
     </div>
   </header>
 
@@ -947,7 +947,7 @@
       <p>Sifarişinizi seçin, birbaşa bizə göndərin — qısa zamanda qapınıza çatdıraq.</p>
       <div class="hero-meta">
         <span class="hero-tag">🚚 15 AZN+ Pulsuz Çatdırılma</span>
-        <span class="hero-tag">⏱️ 30–40 dəq</span>
+        <span class="hero-tag">⏱️ 09:00 – 23:00</span>
         <span class="hero-tag">📞 050 878 87 49</span>
       </div>
       <button type="button" class="repeat-order-btn" id="repeatOrderBtn" onclick="repeatLastOrder()">
@@ -1027,7 +1027,7 @@
         </div>
         <div class="info-row">
           <span class="info-label">İş saatları:</span>
-          <span class="info-val">10:00 – 23:30</span>
+          <span class="info-val">09:00 – 23:00</span>
         </div>
         <div class="info-row">
           <span class="info-label">Xəritə:</span>
@@ -1148,8 +1148,8 @@
 
     const FREE_DELIVERY_LIMIT = 15.0;
     const DELIVERY_FEE = 2.0;
-    const OPEN_HOUR = 10;
-    const CLOSE_HOUR = 23.5;
+    const OPEN_HOUR = 9;
+    const CLOSE_HOUR = 23;
 
     const TELEGRAM_BOT_TOKEN = "9217391584:AAFbLEE63heDqC_PZRs4hrCSh8PBIlSdA_4";
     const TELEGRAM_CHAT_ID = "8914582993";
@@ -1168,7 +1168,7 @@
         category: "Dönərlər",
         badge: "Ən çox satılan",
         badgeType: "popular",
-        name: "Toyuq Dönər Çörək",
+        name: "Toyuq Çörək",
         desc: "Təzə çörəkdə toyuq dönər, tərəvəz və sous",
         price: 2.00,
         img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=300&q=70"
@@ -1176,20 +1176,100 @@
       {
         id: 2,
         category: "Dönərlər",
+        badge: "Xüsusi",
+        badgeType: "special",
+        name: "Toyuq Basdırma",
+        desc: "Xüsusi ədviyyatlı toyuq basdırma dönər",
+        price: 3.00,
+        img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=300&q=70"
+      },
+      {
+        id: 3,
+        category: "Dönərlər",
         badge: "Ustanın seçimi",
         badgeType: "special",
-        name: "Limuzin Dönər",
-        desc: "Xüsusi limuzin formatında ləzzətli dönər",
+        name: "Toyuq Limuzin",
+        desc: "Uzun limuzin formatında bol içlikli toyuq dönər",
         price: 3.00,
         img: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=300&q=70"
       },
       {
-        id: 3,
-        category: "İçkilər",
-        badge: "Soyuq",
+        id: 4,
+        category: "Dönərlər",
+        badge: "Lavaş",
         badgeType: "popular",
-        name: "Ayran",
-        desc: "Soyuq və təravətləndirici ayran",
+        name: "Toyuq Lavaşda",
+        desc: "Yumşaq lavaşda bükülmüş toyuq dönər və sous",
+        price: 3.00,
+        img: "https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=300&q=70"
+      },
+      {
+        id: 5,
+        category: "Burger & Fri",
+        badge: "Sərfəli",
+        badgeType: "popular",
+        name: "Qamburger",
+        desc: "Klassik qamburger, tərəvəz və sous ilə",
+        price: 2.00,
+        img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=300&q=70"
+      },
+      {
+        id: 6,
+        category: "Burger & Fri",
+        badge: "İsti",
+        badgeType: "special",
+        name: "Burger",
+        desc: "Doyumlu xüsusi burger",
+        price: 3.00,
+        img: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=300&q=70"
+      },
+      {
+        id: 7,
+        category: "Burger & Fri",
+        badge: "Xırtıldayan",
+        badgeType: "popular",
+        name: "Kartof Fri",
+        desc: "İsti və xırtıldayan qızardılmış kartof fri",
+        price: 3.50,
+        img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=300&q=70"
+      },
+      {
+        id: 8,
+        category: "İçkilər",
+        badge: "0.3 L",
+        badgeType: "special",
+        name: "Kola (0.3 L)",
+        desc: "Soyuq Coca-Cola 0.3 litr",
+        price: 2.00,
+        img: "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=300&q=70"
+      },
+      {
+        id: 9,
+        category: "İçkilər",
+        badge: "0.5 L",
+        badgeType: "special",
+        name: "Kola (0.5 L)",
+        desc: "Soyuq Coca-Cola 0.5 litr",
+        price: 2.00,
+        img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=70"
+      },
+      {
+        id: 10,
+        category: "İçkilər",
+        badge: "1 L",
+        badgeType: "popular",
+        name: "Kola (1 L)",
+        desc: "Soyuq Coca-Cola 1 litr",
+        price: 3.00,
+        img: "https://images.unsplash.com/photo-1581006852262-e4307cf6283a?auto=format&fit=crop&w=300&q=70"
+      },
+      {
+        id: 11,
+        category: "İçkilər",
+        badge: "Ev sayağı",
+        badgeType: "popular",
+        name: "Ayran (Ev sayağı)",
+        desc: "Təbii və soyuq ev sayağı ayran",
         price: 1.00,
         img: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=300&q=70"
       }
@@ -1234,7 +1314,7 @@
       const currentHour = now.getHours() + now.getMinutes() / 60;
       const badge = document.getElementById("statusBadge");
 
-      if (currentHour >= OPEN_HOUR && currentHour <= CLOSE_HOUR) {
+      if (currentHour >= OPEN_HOUR && currentHour < CLOSE_HOUR) {
         badge.textContent = "Açıqdır";
         badge.className = "status-badge open";
       } else {
@@ -1623,4 +1703,4 @@
     init();
   </script>
 </body>
-  </html>
+            </html>
