@@ -13,6 +13,7 @@
       --text: #f3f4f6;
       --muted: #9ca3af;
       --accent: #ff6b00;
+      --accent-2: #ff9a3c;
       --accent-hover: #e55f00;
       --success: #22c55e;
       --danger: #ef4444;
@@ -129,6 +130,83 @@
       border-color: var(--accent);
     }
 
+    /* Brend Hero Banner */
+    .hero-wrap {
+      padding: 12px 16px 2px;
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(255, 107, 0, 0.22) 0%, rgba(24, 26, 32, 0.98) 70%);
+      border: 1px solid rgba(255, 107, 0, 0.42);
+      border-radius: 16px;
+      padding: 14px 15px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-pill {
+      display: inline-block;
+      background: rgba(255, 107, 0, 0.2);
+      color: var(--accent-2);
+      border: 1px solid rgba(255, 107, 0, 0.4);
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+    }
+
+    .hero-banner h2 {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      color: #fff;
+    }
+
+    .hero-banner p {
+      font-size: 12px;
+      color: #d1d5db;
+      line-height: 1.4;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .hero-tag {
+      background: rgba(15, 16, 20, 0.65);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 11px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .repeat-order-btn {
+      margin-top: 10px;
+      width: 100%;
+      background: rgba(255, 107, 0, 0.16);
+      color: #ffb374;
+      border: 1px solid rgba(255, 107, 0, 0.45);
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .repeat-order-btn.show {
+      display: flex;
+    }
+
     /* Kateqoriya filtrləri */
     .categories {
       display: flex;
@@ -198,14 +276,38 @@
       min-width: 0;
     }
 
+    .item-top-tags {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 3px;
+    }
+
     .item-tag {
       display: inline-block;
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: var(--accent);
-      margin-bottom: 3px;
       font-weight: 700;
+    }
+
+    .item-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(255, 107, 0, 0.16);
+      color: #ffb374;
+      border: 1px solid rgba(255, 107, 0, 0.32);
+    }
+
+    .item-badge.popular {
+      background: rgba(34, 197, 94, 0.14);
+      color: #4ade80;
+      border-color: rgba(34, 197, 94, 0.32);
     }
 
     .item-title {
@@ -301,7 +403,7 @@
       padding: 16px 14px 32px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     .side-drawer.open {
@@ -338,6 +440,27 @@
       cursor: pointer;
     }
 
+    .promo-card {
+      background: linear-gradient(135deg, rgba(255, 107, 0, 0.18), rgba(34, 37, 46, 0.9));
+      border: 1px solid rgba(255, 107, 0, 0.4);
+      border-radius: 12px;
+      padding: 11px 12px;
+    }
+
+    .promo-card strong {
+      display: block;
+      font-size: 12.5px;
+      color: #ffb374;
+      margin-bottom: 3px;
+    }
+
+    .promo-card span {
+      font-size: 11.5px;
+      color: #e5e7eb;
+      line-height: 1.35;
+      display: block;
+    }
+
     .drawer-links {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -356,6 +479,18 @@
       font-weight: 700;
       border: 1px solid var(--border);
       cursor: pointer;
+    }
+
+    .quick-btn.call {
+      background: rgba(255, 107, 0, 0.15);
+      color: #ffb374;
+      border-color: rgba(255, 107, 0, 0.38);
+    }
+
+    .quick-btn.wa {
+      background: rgba(34, 197, 94, 0.14);
+      color: #4ade80;
+      border-color: rgba(34, 197, 94, 0.35);
     }
 
     .quick-btn.map {
@@ -609,7 +744,7 @@
     }
 
     .form-group {
-      margin-bottom: 10px;
+      margin-bottom: 11px;
     }
 
     .form-group label {
@@ -630,6 +765,37 @@
       color: var(--text);
       font-size: 14px;
       font-family: inherit;
+    }
+
+    .address-hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.35;
+    }
+
+    .note-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 7px;
+    }
+
+    .note-chip {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .note-chip.selected {
+      background: rgba(255, 107, 0, 0.2);
+      color: #ffb374;
+      border-color: var(--accent);
     }
 
     .gps-btn {
@@ -773,6 +939,23 @@
     </div>
   </header>
 
+  <!-- Brend Banner Kartı -->
+  <section class="hero-wrap">
+    <div class="hero-banner">
+      <span class="hero-pill">🔥 İsti & Təzə Hazırlanır</span>
+      <h2>Əsl Usta Əlindən Ləzzətli Dönər</h2>
+      <p>Sifarişinizi seçin, birbaşa bizə göndərin — qısa zamanda qapınıza çatdıraq.</p>
+      <div class="hero-meta">
+        <span class="hero-tag">🚚 15 AZN+ Pulsuz Çatdırılma</span>
+        <span class="hero-tag">⏱️ 30–40 dəq</span>
+        <span class="hero-tag">📞 050 878 87 49</span>
+      </div>
+      <button type="button" class="repeat-order-btn" id="repeatOrderBtn" onclick="repeatLastOrder()">
+        ↻ Son sifarişi təkrarla
+      </button>
+    </div>
+  </section>
+
   <nav class="categories" id="categoryBar"></nav>
 
   <main class="menu-container" id="menuList"></main>
@@ -783,12 +966,23 @@
     <div class="drawer-header">
       <div class="drawer-brand">
         <h2>VASİF USTANIN DÖNƏRİ</h2>
-        <p>Məkan, şəkillər, video və sosial hesab</p>
+        <p>Məkan, şəkillər, video və birbaşa əlaqə</p>
       </div>
       <button type="button" class="close-btn" onclick="toggleDrawer(false)">✕</button>
     </div>
 
+    <div class="promo-card">
+      <strong>⭐ Günün Təklifi</strong>
+      <span>15 AZN və yuxarı bütün sifarişlərdə ünvana çatdırılma tam pulsuzdur!</span>
+    </div>
+
     <div class="drawer-links">
+      <a class="quick-btn call" href="tel:+994508788749">
+        📞 Zəng Et
+      </a>
+      <a class="quick-btn wa" href="https://wa.me/994508788749" target="_blank" rel="noopener noreferrer">
+        💬 WhatsApp
+      </a>
       <a class="quick-btn map" href="https://maps.app.goo.gl/KXqKj9GihhTg2hD98" target="_blank" rel="noopener noreferrer">
         📍 Məkan
       </a>
@@ -909,14 +1103,22 @@
 
       <div class="form-group" id="addressGroup">
         <label>Çatdırılma ünvanı</label>
-        <textarea id="custAddress" rows="2" placeholder="Məhəllə, bina, mənzil və ya yaxın obyekt..."></textarea>
+        <textarea id="custAddress" rows="2" placeholder="Məhəllə, küçə, bina, blok, mənzil və ya yaxın obyekt..."></textarea>
+        <div class="address-hint">Ünvanı dəqiq yazmağınız kuryerin daha tez çatmasına kömək edir.</div>
         <button type="button" class="gps-btn" onclick="getLocation()">📍 Hazırkı GPS Məkanımı Əlavə Et</button>
         <div class="gps-status" id="gpsStatus"></div>
       </div>
 
       <div class="form-group">
-        <label>Əlavə qeyd (istəyə bağlı)</label>
-        <input type="text" id="custNote" placeholder="Məs: Acılı olsun, soğan az olsun..." />
+        <label>Dönər seçimi və əlavə qeyd</label>
+        <div class="note-chips" id="noteChips">
+          <button type="button" class="note-chip" onclick="toggleNoteChip(this, 'Acılı olsun')">🌶️ Acılı</button>
+          <button type="button" class="note-chip" onclick="toggleNoteChip(this, 'Acısız olsun')">Acısız</button>
+          <button type="button" class="note-chip" onclick="toggleNoteChip(this, 'Soğansız olsun')">Soğansız</button>
+          <button type="button" class="note-chip" onclick="toggleNoteChip(this, 'Bol souslu olsun')">Bol souslu</button>
+          <button type="button" class="note-chip" onclick="toggleNoteChip(this, 'Xırtıldayan olsun')">Xırtıldayan</button>
+        </div>
+        <input type="text" id="custNote" placeholder="İstəyə bağlı əlavə qeyd yazın..." />
       </div>
 
       <button class="confirm-btn" id="confirmOrderBtn" onclick="confirmOrderInApp()">✓ Sifarişi Təsdiqlə (Avtomatik Göndər)</button>
@@ -964,6 +1166,8 @@
       {
         id: 1,
         category: "Dönərlər",
+        badge: "Ən çox satılan",
+        badgeType: "popular",
         name: "Toyuq Dönər Çörək",
         desc: "Təzə çörəkdə toyuq dönər, tərəvəz və sous",
         price: 2.00,
@@ -972,6 +1176,8 @@
       {
         id: 2,
         category: "Dönərlər",
+        badge: "Ustanın seçimi",
+        badgeType: "special",
         name: "Limuzin Dönər",
         desc: "Xüsusi limuzin formatında ləzzətli dönər",
         price: 3.00,
@@ -980,6 +1186,8 @@
       {
         id: 3,
         category: "İçkilər",
+        badge: "Soyuq",
+        badgeType: "popular",
         name: "Ayran",
         desc: "Soyuq və təravətləndirici ayran",
         price: 1.00,
@@ -991,11 +1199,13 @@
     let searchQuery = "";
     let gpsLink = "";
     let lastOrderText = "";
+    let selectedChips = new Set();
     let cart = JSON.parse(localStorage.getItem("doner_cart") || "{}");
 
     function init() {
       checkOpenStatus();
       restoreCustomerInfo();
+      checkRepeatOrderButton();
       renderCategories();
       renderMenu();
       renderGallery();
@@ -1040,8 +1250,46 @@
       if (saved.address) document.getElementById("custAddress").value = saved.address;
     }
 
+    function checkRepeatOrderButton() {
+      const lastCart = JSON.parse(localStorage.getItem("doner_last_cart") || "{}");
+      const hasItems = Object.keys(lastCart).length > 0;
+      const btn = document.getElementById("repeatOrderBtn");
+      if (hasItems) {
+        btn.classList.add("show");
+      } else {
+        btn.classList.remove("show");
+      }
+    }
+
+    function repeatLastOrder() {
+      const lastCart = JSON.parse(localStorage.getItem("doner_last_cart") || "{}");
+      if (Object.keys(lastCart).length === 0) return;
+      cart = { ...lastCart };
+      saveState();
+      renderMenu();
+      updateUI();
+      toggleCart(true);
+    }
+
     function saveState() {
       localStorage.setItem("doner_cart", JSON.stringify(cart));
+    }
+
+    function toggleNoteChip(btn, text) {
+      if (selectedChips.has(text)) {
+        selectedChips.delete(text);
+        btn.classList.remove("selected");
+      } else {
+        selectedChips.add(text);
+        btn.classList.add("selected");
+      }
+    }
+
+    function getCombinedNote() {
+      const manual = document.getElementById("custNote").value.trim();
+      const chipsText = Array.from(selectedChips).join(", ");
+      if (chipsText && manual) return `${chipsText} • ${manual}`;
+      return chipsText || manual;
     }
 
     function renderCategories() {
@@ -1086,7 +1334,10 @@
           <div class="menu-card">
             <img class="food-img" src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'" />
             <div class="item-info">
-              <span class="item-tag">${item.category}</span>
+              <div class="item-top-tags">
+                <span class="item-tag">${item.category}</span>
+                ${item.badge ? `<span class="item-badge ${item.badgeType || ""}">${item.badge}</span>` : ""}
+              </div>
               <div class="item-title">${item.name}</div>
               <div class="item-desc">${item.desc}</div>
               <div class="item-bottom">
@@ -1265,7 +1516,7 @@
       const name = document.getElementById("custName").value.trim();
       const phone = document.getElementById("custPhone").value.trim();
       const address = document.getElementById("custAddress").value.trim();
-      const note = document.getElementById("custNote").value.trim();
+      const note = getCombinedNote();
       const payment = document.getElementById("paymentMethod").value;
 
       const orderLines = items
@@ -1307,6 +1558,8 @@
       }
 
       localStorage.setItem("doner_customer", JSON.stringify({ name, phone, address }));
+      localStorage.setItem("doner_last_cart", JSON.stringify(cart));
+      checkRepeatOrderButton();
       return true;
     }
 
@@ -1370,4 +1623,4 @@
     init();
   </script>
 </body>
-</html>
+  </html>
