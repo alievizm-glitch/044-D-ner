@@ -946,7 +946,7 @@
       <h2>Əsl Usta Əlindən Ləzzətli Dönər</h2>
       <p>Sifarişinizi seçin, birbaşa bizə göndərin — qısa zamanda qapınıza çatdıraq.</p>
       <div class="hero-meta">
-        <span class="hero-tag">🚚 15 AZN+ Pulsuz Çatdırılma</span>
+        <span class="hero-tag">🚚 Ünvana Görə Çatdırılma</span>
         <span class="hero-tag">⏱️ 09:00 – 23:00</span>
         <span class="hero-tag">📞 050 878 87 49</span>
       </div>
@@ -972,8 +972,8 @@
     </div>
 
     <div class="promo-card">
-      <strong>⭐ Günün Təklifi</strong>
-      <span>15 AZN və yuxarı bütün sifarişlərdə ünvana çatdırılma tam pulsuzdur!</span>
+      <strong>⭐ Ünvana Görə Çatdırılma</strong>
+      <span>Çatdırılma haqqı ünvana və məsafəyə əsasən sifariş zamanı əl ilə qeyd olunur.</span>
     </div>
 
     <div class="drawer-links">
@@ -1066,7 +1066,7 @@
         </div>
         <div class="summary-line">
           <span>Çatdırılma:</span>
-          <span id="deliveryText">2.00 AZN</span>
+          <span id="deliveryText">0.00 AZN</span>
         </div>
         <div class="summary-line total">
           <span>Yekun Məbləğ:</span>
@@ -1080,6 +1080,11 @@
           <option value="delivery">Ünvana çatdırılma</option>
           <option value="pickup">Özüm gəlib götürəcəyəm (Çatdırılma 0 AZN)</option>
         </select>
+      </div>
+
+      <div class="form-group" id="deliveryFeeGroup">
+        <label>Çatdırılma haqqı (AZN — ünvana görə özünüz qeyd edin)</label>
+        <input type="number" id="customDeliveryFee" min="0" step="0.10" placeholder="Məs: 1.50 veya 2.00 (boş qalsa 0.00 AZN)" oninput="updateUI()" />
       </div>
 
       <div class="form-group">
@@ -1146,8 +1151,6 @@
     const SHOP_MAP_URL = "https://maps.app.goo.gl/KXqKj9GihhTg2hD98";
     const TIKTOK_URL = "https://www.tiktok.com/@usta_vasifin_doneri";
 
-    const FREE_DELIVERY_LIMIT = 15.0;
-    const DELIVERY_FEE = 2.0;
     const OPEN_HOUR = 9;
     const CLOSE_HOUR = 23;
 
@@ -1496,9 +1499,9 @@
 
       const orderType = document.getElementById("orderType").value;
       const isPickup = orderType === "pickup";
-      const delivery = (subTotal === 0 || isPickup)
-        ? 0
-        : (subTotal >= FREE_DELIVERY_LIMIT ? 0 : DELIVERY_FEE);
+      const rawFee = parseFloat(document.getElementById("customDeliveryFee").value);
+      const customFee = (!isNaN(rawFee) && rawFee > 0) ? rawFee : 0;
+      const delivery = (subTotal === 0 || isPickup) ? 0 : customFee;
 
       const grandTotal = subTotal + delivery;
 
@@ -1509,6 +1512,7 @@
       const { count, subTotal, delivery, grandTotal, items, isPickup } = getCartStats();
 
       document.getElementById("addressGroup").style.display = isPickup ? "none" : "block";
+      document.getElementById("deliveryFeeGroup").style.display = isPickup ? "none" : "block";
 
       const openBtn = document.getElementById("openCartBtn");
       const barCount = document.getElementById("barCount");
@@ -1526,11 +1530,10 @@
       }
 
       const hint = document.getElementById("freeDeliveryHint");
-      if (!isPickup && subTotal > 0 && subTotal < FREE_DELIVERY_LIMIT) {
-        const diff = (FREE_DELIVERY_LIMIT - subTotal).toFixed(2);
-        hint.textContent = `Pulsuz çatdırılma üçün daha ${diff} AZN məhsul əlavə edin.`;
-      } else if (!isPickup && subTotal >= FREE_DELIVERY_LIMIT) {
-        hint.textContent = "Təbriklər! Çatdırılma pulsuzdur.";
+      if (!isPickup && subTotal > 0) {
+        hint.textContent = delivery > 0
+          ? `Ünvana görə çatdırılma haqqı: ${delivery.toFixed(2)} AZN`
+          : "Çatdırılma haqqı 0.00 AZN qeyd olunub.";
       } else {
         hint.textContent = "";
       }
@@ -1551,7 +1554,7 @@
       `).join("");
 
       document.getElementById("subTotalText").textContent = `${subTotal.toFixed(2)} AZN`;
-      document.getElementById("deliveryText").textContent = delivery === 0 ? "Pulsuz" : `${delivery.toFixed(2)} AZN`;
+      document.getElementById("deliveryText").textContent = delivery === 0 ? "0.00 AZN" : `${delivery.toFixed(2)} AZN`;
       document.getElementById("grandTotalText").textContent = `${grandTotal.toFixed(2)} AZN`;
     }
 
@@ -1613,7 +1616,7 @@
         `${orderLines}\n` +
         `------------------------\n` +
         `Məhsullar: ${subTotal.toFixed(2)} AZN\n` +
-        `Çatdırılma: ${delivery === 0 ? "Pulsuz" : delivery.toFixed(2) + " AZN"}\n` +
+        `Çatdırılma: ${delivery.toFixed(2)} AZN\n` +
         `Yekun: ${grandTotal.toFixed(2)} AZN\n` +
         `Ödəniş: ${payment}\n` +
         `------------------------\n` +
@@ -1703,4 +1706,4 @@
     init();
   </script>
 </body>
-  </html>
+            </html>
