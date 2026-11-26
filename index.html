@@ -507,7 +507,7 @@
       <span class="status-badge open" id="statusBadge">Açıqdır</span>
     </div>
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Menyuda axtar... (məs: şaurma, ayran, ət)" oninput="handleSearch()" />
+      <input type="text" id="searchInput" placeholder="Menyuda axtar... (məs: toyuq, limuzin, ayran)" oninput="handleSearch()" />
     </div>
   </header>
 
@@ -574,7 +574,7 @@
 
       <div class="form-group">
         <label>Əlaqə nömrəsi</label>
-        <input type="tel" id="custPhone" placeholder="051 000 00 00" />
+        <input type="tel" id="custPhone" placeholder="050 000 00 00" />
       </div>
 
       <div class="form-group" id="addressGroup">
@@ -590,7 +590,7 @@
       </div>
 
       <button class="confirm-btn" id="confirmOrderBtn" onclick="confirmOrderInApp()">✓ Sifarişi Təsdiqlə (Avtomatik Göndər)</button>
-      <button class="wa-secondary-btn" onclick="openWhatsAppOrder()">WhatsApp ilə Göndər (+994516162691)</button>
+      <button class="wa-secondary-btn" onclick="openWhatsAppOrder()">WhatsApp ilə Göndər (+994508788749)</button>
 
       <div class="success-box" id="successBox">
         <h4 id="successTitle">Sifarişiniz Təsdiqləndi!</h4>
@@ -601,7 +601,7 @@
 
   <script>
     const SHOP_NAME = "VASİF USTANIN DÖNƏRİ";
-    const RESTAURANT_PHONE = "994516162691";
+    const RESTAURANT_PHONE = "994508788749";
     const FREE_DELIVERY_LIMIT = 15.0;
     const DELIVERY_FEE = 2.0;
     const OPEN_HOUR = 10;
@@ -613,25 +613,9 @@
     const FALLBACK_IMG = "https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=300&q=70";
 
     const menuData = [
-      { id: 1, category: "Dönərlər", name: "Toyuq Dönər (Lavaş)", desc: "Toyuq əti, təzə tərəvəz, xüsusi sous, kartof fri", price: 4.50, img: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=300&q=70" },
-      { id: 2, category: "Dönərlər", name: "Toyuq Dönər (Çörək)", desc: "Xırtıldayan çörəkdə bol toyuq əti və sous", price: 4.00, img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=300&q=70" },
-      { id: 3, category: "Dönərlər", name: "Ət Dönər (Lavaş)", desc: "100% mal əti, pomidor, xiyar, göyərti, xüsusi sous", price: 6.00, img: "https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=300&q=70" },
-      { id: 4, category: "Dönərlər", name: "Ət Dönər (Çörək)", desc: "Təndir və ya dairəvi çörəkdə bol mal əti", price: 5.50, img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=300&q=70" },
-      { id: 5, category: "Dönərlər", name: "Şaurma (Toyuq)", desc: "Sarımsaqlı ağ sous, turşu xiyar, kartof fri, lavaş", price: 5.50, img: "https://images.unsplash.com/photo-1642783944285-b30b1b36b8b0?auto=format&fit=crop&w=300&q=70" },
-      { id: 6, category: "Dönərlər", name: "İsgəndər Dönər", desc: "Kərə yağlı tomat sousu, qatıq və suxari üzərində ət dönər", price: 11.50, img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=300&q=70" },
-
-      { id: 7, category: "Setlər", name: "Kombo Toyuq Set", desc: "Toyuq dönər (lavaş) + Kartof fri + Ayran (200ml)", price: 7.00, img: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=300&q=70" },
-      { id: 8, category: "Setlər", name: "Kombo Ət Set", desc: "Ət dönər (lavaş) + Kartof fri + Cola (330ml)", price: 8.90, img: "https://images.unsplash.com/photo-1565299507177-b0ac66763828?auto=format&fit=crop&w=300&q=70" },
-      { id: 9, category: "Setlər", name: "İkili Dostluq Seti", desc: "2 ədəd Toyuq şaurma + 2 ədəd Fri + 2 ədəd Ayran", price: 13.50, img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=300&q=70" },
-
-      { id: 10, category: "Qəlyanaltılar", name: "Kartof Fri", desc: "Qızardılmış xırtıldayan kartof + ketçup və mayonez", price: 3.00, img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=300&q=70" },
-      { id: 11, category: "Qəlyanaltılar", name: "Mərci Şorbası", desc: "İsti mərcimək şorbası, limon və suxari ilə", price: 3.50, img: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=300&q=70" },
-      { id: 12, category: "Qəlyanaltılar", name: "Naggets (6 ədəd)", desc: "Xırtıldayan toyuq naggetsləri və sous", price: 4.50, img: "https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=300&q=70" },
-
-      { id: 13, category: "İçkilər", name: "Ev Sayağı Ayran (250 ml)", desc: "Soyuq və təbii köpüklü ayran", price: 1.50, img: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=300&q=70" },
-      { id: 14, category: "İçkilər", name: "Coca-Cola (330 ml)", desc: "Soyuq dəmir banka", price: 2.00, img: "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=300&q=70" },
-      { id: 15, category: "İçkilər", name: "Fanta / Sprite (330 ml)", desc: "Soyuq dəmir banka", price: 2.00, img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=70" },
-      { id: 16, category: "İçkilər", name: "Qazsız Su (500 ml)", desc: "Sərin içməli su", price: 1.00, img: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=300&q=70" }
+      { id: 1, category: "Dönərlər", name: "Toyuq Dönər Çörək", desc: "Təzə çörəkdə toyuq dönər, tərəvəz və sous", price: 2.00, img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=300&q=70" },
+      { id: 2, category: "Dönərlər", name: "Limuzin Dönər", desc: "Xüsusi limuzin formatında ləzzətli dönər", price: 3.00, img: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=300&q=70" },
+      { id: 3, category: "İçkilər", name: "Ayran", desc: "Soyuq və təravətləndirici ayran", price: 1.00, img: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=300&q=70" }
     ];
 
     let activeCategory = "Hamısı";
@@ -975,4 +959,4 @@
     init();
   </script>
 </body>
-</html>
+</html> ü
