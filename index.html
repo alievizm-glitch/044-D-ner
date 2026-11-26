@@ -767,6 +767,58 @@
       font-family: inherit;
     }
 
+    .receipt-box {
+      background: var(--bg);
+      border: 1px dashed rgba(255, 107, 0, 0.55);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .receipt-box label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #ffb374;
+      margin-bottom: 6px;
+    }
+
+    .receipt-box input[type="file"] {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .receipt-preview-wrap {
+      margin-top: 10px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .receipt-preview-wrap.show {
+      display: flex;
+    }
+
+    .receipt-preview-img {
+      width: 68px;
+      height: 68px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+    }
+
+    .receipt-meta {
+      font-size: 11.5px;
+      color: var(--success);
+      line-height: 1.35;
+    }
+
     .address-hint {
       font-size: 11px;
       color: var(--muted);
@@ -1089,11 +1141,22 @@
 
       <div class="form-group">
         <label>Ödəniş üsulu</label>
-        <select id="paymentMethod">
+        <select id="paymentMethod" onchange="toggleReceiptBox()">
           <option value="Nağd (Qapıda)">Nağd (Qapıda)</option>
           <option value="Kartdan karta (Köçürmə)">Kartdan karta (Köçürmə)</option>
           <option value="POS Terminal (Qapıda)">POS Terminal (Qapıda)</option>
         </select>
+      </div>
+
+      <!-- Kartdan karta ödəniş çeki yükləmə sahəsi -->
+      <div class="receipt-box" id="receiptBox" style="display: none;">
+        <label for="receiptInput">🧾 Ödəniş çekinin şəkli (Kartdan karta köçürmə)</label>
+        <input type="file" id="receiptInput" accept="image/*" onchange="handleReceiptChange(event)" />
+        <div class="address-hint">Köçürmə etdiyinizə dair qəbz/çekin şəkli sifariş təsdiqlənəndə Telegram-a göndəriləcək.</div>
+        <div class="receipt-preview-wrap" id="receiptPreviewWrap">
+          <img id="receiptPreviewImg" class="receipt-preview-img" src="" alt="Ödəniş çeki" />
+          <div class="receipt-meta" id="receiptMeta">Çek seçildi ✓</div>
+        </div>
       </div>
 
       <div class="form-group">
@@ -1282,6 +1345,7 @@
     let searchQuery = "";
     let gpsLink = "";
     let lastOrderText = "";
+    let receiptFile = null;
     let selectedChips = new Set();
     let cart = JSON.parse(localStorage.getItem("doner_cart") || "{}");
 
@@ -1292,7 +1356,36 @@
       renderCategories();
       renderMenu();
       renderGallery();
+      toggleReceiptBox();
       updateUI();
+    }
+
+    function toggleReceiptBox() {
+      const payment = document.getElementById("paymentMethod").value;
+      const box = document.getElementById("receiptBox");
+      box.style.display = payment === "Kartdan karta (Köçürmə)" ? "block" : "none";
+    }
+
+    function handleReceiptChange(e) {
+      const file = e.target.files && e.target.files[0];
+      const wrap = document.getElementById("receiptPreviewWrap");
+      const img = document.getElementById("receiptPreviewImg");
+      const meta = document.getElementById("receiptMeta");
+
+      if (!file) {
+        receiptFile = null;
+        wrap.classList.remove("show");
+        return;
+      }
+
+      receiptFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        img.src = reader.result;
+        meta.textContent = `Çek seçildi ✓ (${file.name})`;
+        wrap.classList.add("show");
+      };
+      reader.readAsDataURL(file);
     }
 
     function toggleDrawer(open) {
@@ -1610,6 +1703,10 @@
         ? `Sifariş növü: Özüm gəlib götürəcəyəm\nDönərxana ünvanı: ${SHOP_MAP_URL}`
         : `Ünvan: ${address || "GPS ilə göndərilib"}${gpsLink ? `\nXəritə (GPS): ${gpsLink}` : ""}`;
 
+      const receiptInfo = payment === "Kartdan karta (Köçürmə)"
+        ? `\nÖdəniş çeki: ${receiptFile ? "Şəkil əlavə olundu ✓" : "Əlavə olunmayıb"}`
+        : "";
+
       return (
         `${SHOP_NAME} — YENİ SİFARİŞ (${orderCode})\n` +
         `------------------------\n` +
@@ -1618,7 +1715,7 @@
         `Məhsullar: ${subTotal.toFixed(2)} AZN\n` +
         `Çatdırılma: ${delivery.toFixed(2)} AZN\n` +
         `Yekun: ${grandTotal.toFixed(2)} AZN\n` +
-        `Ödəniş: ${payment}\n` +
+        `Ödəniş: ${payment}${receiptInfo}\n` +
         `------------------------\n` +
         `Müştəri: ${name}\n` +
         `Telefon: ${phone}\n` +
@@ -1634,15 +1731,40 @@
       const name = document.getElementById("custName").value.trim();
       const phone = document.getElementById("custPhone").value.trim();
       const address = document.getElementById("custAddress").value.trim();
+      const payment = document.getElementById("paymentMethod").value;
 
       if (!name || !phone || (!isPickup && !address && !gpsLink)) {
         alert("Zəhmət olmasa ad, telefon və ünvanı (və ya GPS məkanı) daxil edin.");
         return false;
       }
 
+      if (payment === "Kartdan karta (Köçürmə)" && !receiptFile) {
+        alert("Kartdan karta ödəniş üçün ödəniş çekinin şəklini əlavə edin.");
+        return false;
+      }
+
       localStorage.setItem("doner_customer", JSON.stringify({ name, phone, address }));
       localStorage.setItem("doner_last_cart", JSON.stringify(cart));
       checkRepeatOrderButton();
+      return true;
+    }
+
+    async function sendReceiptToTelegram(orderCode, captionText) {
+      if (!receiptFile) return true;
+
+      const formData = new FormData();
+      formData.append("chat_id", TELEGRAM_CHAT_ID);
+      formData.append("photo", receiptFile);
+      formData.append("caption", captionText);
+
+      const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
+      if (!data.ok) {
+        throw new Error(data.description || "Çek şəkli göndərilə bilmədi");
+      }
       return true;
     }
 
@@ -1673,23 +1795,26 @@
 
         const data = await res.json();
 
-        if (data.ok) {
-          const { grandTotal } = getCartStats();
-          successBox.className = "success-box show";
-          successTitle.textContent = "Sifarişiniz Təsdiqləndi!";
-          successDetails.innerHTML =
-            `Sifariş kodunuz: <strong>${orderCode}</strong><br>` +
-            `Yekun məbləğ: <strong>${grandTotal.toFixed(2)} AZN</strong><br>` +
-            `Sifarişiniz <strong>${SHOP_NAME}</strong> ünvanına göndərildi.`;
-          btn.textContent = "✓ Sifariş Təsdiqləndi";
-        } else {
+        if (!data.ok) {
           throw new Error(data.description || "Telegram göndəriş xətası");
         }
+
+        const custName = document.getElementById("custName").value.trim();
+        await sendReceiptToTelegram(orderCode, `🧾 Ödəniş çeki — Sifariş ${orderCode} (${custName})`);
+
+        const { grandTotal } = getCartStats();
+        successBox.className = "success-box show";
+        successTitle.textContent = "Sifarişiniz Təsdiqləndi!";
+        successDetails.innerHTML =
+          `Sifariş kodunuz: <strong>${orderCode}</strong><br>` +
+          `Yekun məbləğ: <strong>${grandTotal.toFixed(2)} AZN</strong><br>` +
+          `Sifarişiniz${receiptFile ? " və ödəniş çekiniz" : ""} <strong>${SHOP_NAME}</strong> ünvanına göndərildi.`;
+        btn.textContent = "✓ Sifariş Təsdiqləndi";
       } catch (err) {
         successBox.className = "success-box show error";
         successTitle.textContent = "Göndəriş Alınmadı";
         successDetails.innerHTML =
-          "Telegram botunuza əvvəlcə <strong>/start</strong> yazdığınızdan və internet bağlantısından əmin olun.";
+          "Telegram botunuza əvvəlcə <strong>/start</strong> yazdığınızdan, çek şəklinin düzgün seçildiyindən və internet bağlantısından əmin olun.";
         btn.disabled = false;
         btn.textContent = "✓ Sifarişi Təsdiqlə (Avtomatik Göndər)";
       }
@@ -1706,4 +1831,4 @@
     init();
   </script>
 </body>
-            </html>
+  </html>
