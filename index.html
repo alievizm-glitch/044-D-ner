@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Mərkəz Dönər & Restoran | Onlayn Sifariş</title>
+  <style>
+    :root {
+      --bg: #0f1014;
+      --surface: #181a20;
+      --surface-2: #22252e;
+      --border: #2c303c;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --accent: #ff6b00;
+      --accent-hover: #e55f00;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --info: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding-bottom: 96px;
+    }
+
+    /* Başlıq */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(15, 16, 20, 0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .brand h1 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .brand p {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .status-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .status-badge.open {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+
+    .status-badge.closed {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    /* Axtarış qutusu */
+    .search-box {
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 12px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent);
+    }
+
+    /* Kateqoriya filtrləri */
+    .categories {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 12px 16px;
+      scrollbar-width: none;
+    }
+
+    .categories::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-btn {
+      background: var(--surface);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .cat-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Məhsul siyahısı */
+    .menu-container {
+      padding: 4px 16px 20px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: var(--muted);
+      padding: 32px 16px;
+      font-size: 14px;
+    }
+
+    .menu-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .item-info {
+      flex: 1;
+    }
+
+    .item-tag {
+      display: inline-block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--accent);
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .item-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .item-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .item-price {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* Miqdar idarəetməsi */
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 4px;
+    }
+
+    .qty-btn {
+      width: 30px;
+      height: 30px;
+      border: none;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qty-btn.minus {
+      background: #2f3340;
+    }
+
+    .qty-val {
+      min-width: 20px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    /* Alt sabit səbət paneli */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 12px 16px;
+      z-index: 30;
+    }
+
+    .open-cart-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .open-cart-btn:disabled {
+      background: #2a2d37;
+      color: var(--muted);
+      cursor: not-allowed;
+    }
+
+    /* Səbət Modalı */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.76);
+      z-index: 40;
+      display: none;
+      align-items: flex-end;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .cart-sheet {
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--surface);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      border-top: 1px solid var(--border);
+      padding: 18px 16px 28px;
+    }
+
+    .sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .clear-btn {
+      background: rgba(239, 68, 68, 0.14);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .close-btn {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .cart-items {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .cart-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface-2);
+      padding: 10px 12px;
+      border-radius: 10px;
+    }
+
+    .cart-row-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .cart-row-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .summary-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 14px;
+      font-size: 13px;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
+    .summary-line.total {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .free-hint {
+      font-size: 11px;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    .gps-btn {
+      width: 100%;
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 6px;
+      cursor: pointer;
+    }
+
+    .gps-status {
+      font-size: 11px;
+      color: var(--success);
+      margin-top: 4px;
+    }
+
+    .whatsapp-btn {
+      width: 100%;
+      background: var(--success);
+      color: #06210f;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-top">
+      <div class="brand">
+        <h1>Mərkəz Dönər & Restoran</h1>
+        <p>İş saatı: 10:00 – 23:30 • 30-40 dəq</p>
+      </div>
+      <span class="status-badge open" id="statusBadge">Açıqdır</span>
+    </div>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Menyuda axtar... (məs: şaurma, ayran, ət)" oninput="handleSearch()" />
+    </div>
+  </header>
+
+  <nav class="categories" id="categoryBar"></nav>
+
+  <main class="menu-container" id="menuList"></main>
+
+  <div class="bottom-bar">
+    <button class="open-cart-btn" id="openCartBtn" disabled onclick="toggleCart(true)">
+      <span id="barCount">Səbət boşdur</span>
+      <span id="barTotal">0.00 AZN</span>
+    </button>
+  </div>
+
+  <div class="modal-backdrop" id="cartModal" onclick="handleBackdrop(event)">
+    <div class="cart-sheet">
+      <div class="sheet-header">
+        <h3>Sifariş Səbəti</h3>
+        <div class="header-actions">
+          <button class="clear-btn" onclick="clearCart()">Təmizlə</button>
+          <button class="close-btn" onclick="toggleCart(false)">Bağla</button>
+        </div>
+      </div>
+
+      <div class="cart-items" id="cartItemsContainer"></div>
+
+      <div class="summary-box">
+        <div class="free-hint" id="freeDeliveryHint"></div>
+        <div class="summary-line">
+          <span>Məhsullar:</span>
+          <span id="subTotalText">0.00 AZN</span>
+        </div>
+        <div class="summary-line">
+          <span>Çatdırılma:</span>
+          <span id="deliveryText">2.00 AZN</span>
+        </div>
+        <div class="summary-line total">
+          <span>Yekun Məbləğ:</span>
+          <span id="grandTotalText">0.00 AZN</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Sifariş növü</label>
+        <select id="orderType" onchange="updateUI()">
+          <option value="delivery">Ünvana çatdırılma</option>
+          <option value="pickup">Özüm gəlib götürəcəyəm (Çatdırılma 0 AZN)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Ödəniş üsulu</label>
+        <select id="paymentMethod">
+          <option value="Nağd (Qapıda)">Nağd (Qapıda)</option>
+          <option value="Kartdan karta (Köçürmə)">Kartdan karta (Köçürmə)</option>
+          <option value="POS Terminal (Qapıda)">POS Terminal (Qapıda)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Adınız</label>
+        <input type="text" id="custName" placeholder="Məs: Orxan" />
+      </div>
+
+      <div class="form-group">
+        <label>Əlaqə nömrəsi</label>
+        <input type="tel" id="custPhone" placeholder="051 000 00 00" />
+      </div>
+
+      <div class="form-group" id="addressGroup">
+        <label>Çatdırılma ünvanı</label>
+        <textarea id="custAddress" rows="2" placeholder="Məhəllə, bina, mənzil və ya yaxın obyekt..."></textarea>
+        <button type="button" class="gps-btn" onclick="getLocation()">📍 Hazırkı GPS Məkanımı Əlavə Et</button>
+        <div class="gps-status" id="gpsStatus"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Əlavə qeyd (istəyə bağlı)</label>
+        <input type="text" id="custNote" placeholder="Məs: Acılı olsun, soğan az olsun..." />
+      </div>
+
+      <button class="whatsapp-btn" onclick="submitOrder()">WhatsApp ilə Sifarişi Göndər</button>
+    </div>
+  </div>
+
+  <script>
+    // Daxil edilmiş rəsmi WhatsApp nömrəsi (+994516162691)
+    const RESTAURANT_PHONE = "994516162691";
+    const FREE_DELIVERY_LIMIT = 15.0;
+    const DELIVERY_FEE = 2.0;
+    const OPEN_HOUR = 10;   // 10:00
+    const CLOSE_HOUR = 23.5; // 23:30
+
+    const menuData = [
+      { id: 1, category: "Dönərlər", name: "Toyuq Dönər (Lavaş)", desc: "Toyuq əti, təzə tərəvəz, xüsusi sous, kartof fri", price: 4.50 },
+      { id: 2, category: "Dönərlər", name: "Toyuq Dönər (Çörək)", desc: "Xırtıldayan çörəkdə bol toyuq əti və sous", price: 4.00 },
+      { id: 3, category: "Dönərlər", name: "Ət Dönər (Lavaş)", desc: "100% mal əti, pomidor, xiyar, göyərti, xüsusi sous", price: 6.00 },
+      { id: 4, category: "Dönərlər", name: "Ət Dönər (Çörək)", desc: "Təndir və ya dairəvi çörəkdə bol mal əti", price: 5.50 },
+      { id: 5, category: "Dönərlər", name: "Şaurma (Toyuq)", desc: "Sarımsaqlı ağ sous, turşu xiyar, kartof fri, lavaş", price: 5.50 },
+      { id: 6, category: "Dönərlər", name: "İsgəndər Dönər", desc: "Kərə yağlı tomat sousu, qatıq və suxari üzərində ət dönər", price: 11.50 },
+
+      { id: 7, category: "Setlər", name: "Kombo Toyuq Set", desc: "Toyuq dönər (lavaş) + Kartof fri + Ayran (200ml)", price: 7.00 },
+      { id: 8, category: "Setlər", name: "Kombo Ət Set", desc: "Ət dönər (lavaş) + Kartof fri + Cola (330ml)", price: 8.90 },
+      { id: 9, category: "Setlər", name: "İkili Dostluq Seti", desc: "2 ədəd Toyuq şaurma + 2 ədəd Fri + 2 ədəd Ayran", price: 13.50 },
+
+      { id: 10, category: "Qəlyanaltılar", name: "Kartof Fri", desc: "Qızardılmış xırtıldayan kartof + ketçup və mayonez", price: 3.00 },
+      { id: 11, category: "Qəlyanaltılar", name: "Mərci Şorbası", desc: "İsti mərcimək şorbası, limon və suxari ilə", price: 3.50 },
+      { id: 12, category: "Qəlyanaltılar", name: "Naggets (6 ədəd)", desc: "Xırtıldayan toyuq naggetsləri və sous", price: 4.50 },
+
+      { id: 13, category: "İçkilər", name: "Ev Sayağı Ayran (250 ml)", desc: "Soyuq və təbii köpüklü ayran", price: 1.50 },
+      { id: 14, category: "İçkilər", name: "Coca-Cola (330 ml)", desc: "Soyuq dəmir banka", price: 2.00 },
+      { id: 15, category: "İçkilər", name: "Fanta / Sprite (330 ml)", desc: "Soyuq dəmir banka", price: 2.00 },
+      { id: 16, category: "İçkilər", name: "Qazsız Su (500 ml)", desc: "Sərin içməli su", price: 1.00 }
+    ];
+
+    let activeCategory = "Hamısı";
+    let searchQuery = "";
+    let gpsLink = "";
+    let cart = JSON.parse(localStorage.getItem("doner_cart") || "{}");
+
+    function init() {
+      checkOpenStatus();
+      restoreCustomerInfo();
+      renderCategories();
+      renderMenu();
+      updateUI();
+    }
+
+    function checkOpenStatus() {
+      const now = new Date();
+      const currentHour = now.getHours() + now.getMinutes() / 60;
+      const badge = document.getElementById("statusBadge");
+
+      if (currentHour >= OPEN_HOUR && currentHour <= CLOSE_HOUR) {
+        badge.textContent = "Açıqdır";
+        badge.className = "status-badge open";
+      } else {
+        badge.textContent = "Hazırda Bağlıdır";
+        badge.className = "status-badge closed";
+      }
+    }
+
+    function restoreCustomerInfo() {
+      const saved = JSON.parse(localStorage.getItem("doner_customer") || "{}");
+      if (saved.name) document.getElementById("custName").value = saved.name;
+      if (saved.phone) document.getElementById("custPhone").value = saved.phone;
+      if (saved.address) document.getElementById("custAddress").value = saved.address;
+    }
+
+    function saveState() {
+      localStorage.setItem("doner_cart", JSON.stringify(cart));
+    }
+
+    function renderCategories() {
+      const categories = ["Hamısı", ...new Set(menuData.map(item => item.category))];
+      const bar = document.getElementById("categoryBar");
+      bar.innerHTML = categories.map(cat => `
+        <button class="cat-btn ${cat === activeCategory ? "active" : ""}" onclick="selectCategory('${cat}')">
+          ${cat}
+        </button>
+      `).join("");
+    }
+
+    function selectCategory(cat) {
+      activeCategory = cat;
+      renderCategories();
+      renderMenu();
+    }
+
+    function handleSearch() {
+      searchQuery = document.getElementById("searchInput").value.trim().toLowerCase();
+      renderMenu();
+    }
+
+    function renderMenu() {
+      const list = document.getElementById("menuList");
+      const filtered = menuData.filter(item => {
+        const matchCat = activeCategory === "Hamısı" || item.category === activeCategory;
+        const matchSearch = !searchQuery ||
+          item.name.toLowerCase().includes(searchQuery) ||
+          item.desc.toLowerCase().includes(searchQuery);
+        return matchCat && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        list.innerHTML = `<div class="empty-state">Axtarışa uyğun məhsul tapılmadı.</div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map(item => {
+        const qty = cart[item.id] || 0;
+        return `
+          <div class="menu-card">
+            <div class="item-info">
+              <span class="item-tag">${item.category}</span>
+              <div class="item-title">${item.name}</div>
+              <div class="item-desc">${item.desc}</div>
+              <div class="item-price">${item.price.toFixed(2)} AZN</div>
+            </div>
+            <div class="qty-controls">
+              ${qty > 0 ? `
+                <button class="qty-btn minus" onclick="changeQty(${item.id}, -1)">-</button>
+                <span class="qty-val">${qty}</span>
+              ` : ""}
+              <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function changeQty(id, delta) {
+      const current = cart[id] || 0;
+      const next = current + delta;
+      if (next <= 0) {
+        delete cart[id];
+      } else {
+        cart[id] = next;
+      }
+      saveState();
+      renderMenu();
+      updateUI();
+    }
+
+    function clearCart() {
+      cart = {};
+      saveState();
+      renderMenu();
+      updateUI();
+    }
+
+    function getCartStats() {
+      let count = 0;
+      let subTotal = 0;
+      const items = [];
+
+      for (const [idStr, qty] of Object.entries(cart)) {
+        const product = menuData.find(p => p.id === Number(idStr));
+        if (product) {
+          count += qty;
+          subTotal += product.price * qty;
+          items.push({ ...product, qty, lineTotal: product.price * qty });
+        }
+      }
+
+      const orderType = document.getElementById("orderType").value;
+      const isPickup = orderType === "pickup";
+      const delivery = (subTotal === 0 || isPickup)
+        ? 0
+        : (subTotal >= FREE_DELIVERY_LIMIT ? 0 : DELIVERY_FEE);
+
+      const grandTotal = subTotal + delivery;
+
+      return { count, subTotal, delivery, grandTotal, items, isPickup };
+    }
+
+    function updateUI() {
+      const { count, subTotal, delivery, grandTotal, items, isPickup } = getCartStats();
+
+      document.getElementById("addressGroup").style.display = isPickup ? "none" : "block";
+
+      const openBtn = document.getElementById("openCartBtn");
+      const barCount = document.getElementById("barCount");
+      const barTotal = document.getElementById("barTotal");
+
+      if (count === 0) {
+        openBtn.disabled = true;
+        barCount.textContent = "Səbət boşdur";
+        barTotal.textContent = "0.00 AZN";
+        toggleCart(false);
+      } else {
+        openBtn.disabled = false;
+        barCount.textContent = `Səbətə bax (${count} məhsul)`;
+        barTotal.textContent = `${grandTotal.toFixed(2)} AZN`;
+      }
+
+      const hint = document.getElementById("freeDeliveryHint");
+      if (!isPickup && subTotal > 0 && subTotal < FREE_DELIVERY_LIMIT) {
+        const diff = (FREE_DELIVERY_LIMIT - subTotal).toFixed(2);
+        hint.textContent = `Pulsuz çatdırılma üçün daha ${diff} AZN məhsul əlavə edin.`;
+      } else if (!isPickup && subTotal >= FREE_DELIVERY_LIMIT) {
+        hint.textContent = "Təbriklər! Çatdırılma pulsuzdur.";
+      } else {
+        hint.textContent = "";
+      }
+
+      const container = document.getElementById("cartItemsContainer");
+      container.innerHTML = items.map(item => `
+        <div class="cart-row">
+          <div>
+            <div class="cart-row-title">${item.name}</div>
+            <div class="cart-row-sub">${item.price.toFixed(2)} AZN × ${item.qty} = ${item.lineTotal.toFixed(2)} AZN</div>
+          </div>
+          <div class="qty-controls">
+            <button class="qty-btn minus" onclick="changeQty(${item.id}, -1)">-</button>
+            <span class="qty-val">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+          </div>
+        </div>
+      `).join("");
+
+      document.getElementById("subTotalText").textContent = `${subTotal.toFixed(2)} AZN`;
+      document.getElementById("deliveryText").textContent = delivery === 0 ? "Pulsuz" : `${delivery.toFixed(2)} AZN`;
+      document.getElementById("grandTotalText").textContent = `${grandTotal.toFixed(2)} AZN`;
+    }
+
+    function toggleCart(show) {
+      const modal = document.getElementById("cartModal");
+      if (show) {
+        modal.classList.add("open");
+      } else {
+        modal.classList.remove("open");
+      }
+    }
+
+    function handleBackdrop(e) {
+      if (e.target.id === "cartModal") {
+        toggleCart(false);
+      }
+    }
+
+    function getLocation() {
+      const statusEl = document.getElementById("gpsStatus");
+      if (!navigator.geolocation) {
+        statusEl.textContent = "Cihazınız GPS məkanı dəstəkləmir.";
+        return;
+      }
+
+      statusEl.textContent = "Məkan təyin edilir...";
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          gpsLink = `https://maps.google.com/?q=${latitude},${longitude}`;
+          statusEl.textContent = "GPS məkan uğurla əlavə olundu ✓";
+        },
+        () => {
+          statusEl.textContent = "Məkan icazəsi verilmədi. Ünvanı əl ilə yazın.";
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    }
+
+    function submitOrder() {
+      const { count, subTotal, delivery, grandTotal, items, isPickup } = getCartStats();
+      if (count === 0) return;
+
+      const name = document.getElementById("custName").value.trim();
+      const phone = document.getElementById("custPhone").value.trim();
+      const address = document.getElementById("custAddress").value.trim();
+      const note = document.getElementById("custNote").value.trim();
+      const payment = document.getElementById("paymentMethod").value;
+
+      if (!name || !phone || (!isPickup && !address && !gpsLink)) {
+        alert("Zəhmət olmasa ad, telefon və ünvanı (və ya GPS məkanı) daxil edin.");
+        return;
+      }
+
+      // Müştəri məlumatlarını növbəti sifariş üçün yadda saxla
+      localStorage.setItem("doner_customer", JSON.stringify({ name, phone, address }));
+
+      const orderCode = "#" + Math.floor(1000 + Math.random() * 9000);
+      const orderLines = items
+        .map(i => `• ${i.name} × ${i.qty} = ${i.lineTotal.toFixed(2)} AZN`)
+        .join("\n");
+
+      const deliveryInfo = isPickup
+        ? "Sifariş növü: Özüm gəlib götürəcəyəm"
+        : `Ünvan: ${address || "GPS ilə göndərilib"}${gpsLink ? `\nXəritə (GPS): ${gpsLink}` : ""}`;
+
+      const message =
+        `*YENİ SİFARİŞ (${orderCode})*\n` +
+        `------------------------\n` +
+        `${orderLines}\n` +
+        `------------------------\n` +
+        `Məhsullar: ${subTotal.toFixed(2)} AZN\n` +
+        `Çatdırılma: ${delivery === 0 ? "Pulsuz" : delivery.toFixed(2) + " AZN"}\n` +
+        `*Yekun: ${grandTotal.toFixed(2)} AZN*\n` +
+        `Ödəniş: ${payment}\n` +
+        `------------------------\n` +
+        `Müştəri: ${name}\n` +
+        `Telefon: ${phone}\n` +
+        `${deliveryInfo}` +
+        (note ? `\nQeyd: ${note}` : "");
+
+      const encoded = encodeURIComponent(message);
+      window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encoded}`, "_blank");
+    }
+
+    init();
+  </script>
+</body>
+  </html>
