@@ -32,8 +32,10 @@
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       padding-bottom: 98px;
+      overflow-x: hidden;
     }
 
+    /* Başlıq */
     header {
       position: sticky;
       top: 0;
@@ -49,17 +51,44 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
-      gap: 8px;
+      gap: 10px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .menu-toggle-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 19px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .menu-toggle-btn:active {
+      border-color: var(--accent);
     }
 
     .brand h1 {
-      font-size: 17px;
+      font-size: 16.5px;
       font-weight: 800;
       letter-spacing: 0.2px;
     }
 
     .brand p {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--muted);
       margin-top: 2px;
     }
@@ -70,6 +99,7 @@
       padding: 4px 10px;
       border-radius: 999px;
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .status-badge.open {
@@ -99,39 +129,7 @@
       border-color: var(--accent);
     }
 
-    .quick-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      padding: 12px 16px 4px;
-    }
-
-    .quick-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      text-decoration: none;
-      border-radius: 11px;
-      padding: 10px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      border: 1px solid var(--border);
-      cursor: pointer;
-    }
-
-    .quick-btn.map {
-      background: rgba(59, 130, 246, 0.14);
-      color: #60a5fa;
-      border-color: rgba(59, 130, 246, 0.35);
-    }
-
-    .quick-btn.tiktok {
-      background: rgba(254, 44, 85, 0.15);
-      color: #ff5c7a;
-      border-color: rgba(254, 44, 85, 0.38);
-    }
-
+    /* Kateqoriya filtrləri */
     .categories {
       display: flex;
       gap: 8px;
@@ -162,8 +160,9 @@
       border-color: var(--accent);
     }
 
+    /* Menyu kartları */
     .menu-container {
-      padding: 4px 16px 16px;
+      padding: 4px 16px 20px;
       display: grid;
       gap: 12px;
     }
@@ -271,20 +270,123 @@
       font-weight: 700;
     }
 
-    .extra-section {
-      padding: 8px 16px 14px;
+    /* Yandan Sürüşməli Panel (Sidebar Drawer) */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.72);
+      z-index: 45;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
     }
 
-    .section-title {
-      font-size: 15px;
+    .drawer-backdrop.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .side-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: min(88vw, 360px);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      z-index: 50;
+      transform: translateX(-100%);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+      overflow-y: auto;
+      padding: 16px 14px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .side-drawer.open {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .drawer-brand h2 {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .drawer-brand p {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .close-btn {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 11px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .drawer-links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .quick-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      border-radius: 11px;
+      padding: 10px 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .quick-btn.map {
+      background: rgba(59, 130, 246, 0.14);
+      color: #60a5fa;
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+
+    .quick-btn.tiktok {
+      background: rgba(254, 44, 85, 0.15);
+      color: #ff5c7a;
+      border-color: rgba(254, 44, 85, 0.38);
+    }
+
+    .drawer-block {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .drawer-block-title {
+      font-size: 13.5px;
       font-weight: 700;
       margin-bottom: 10px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
     }
 
-    .section-sub {
+    .drawer-block-sub {
       font-size: 11px;
       color: var(--muted);
       font-weight: 500;
@@ -293,28 +395,28 @@
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      gap: 7px;
     }
 
     .gallery-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 10px;
       overflow: hidden;
       cursor: pointer;
     }
 
     .gallery-card img {
       width: 100%;
-      height: 112px;
+      height: 92px;
       object-fit: cover;
       display: block;
       background: var(--surface-2);
     }
 
     .gallery-caption {
-      padding: 6px 8px;
-      font-size: 11px;
+      padding: 5px 6px;
+      font-size: 10.5px;
       color: var(--text);
       font-weight: 600;
       white-space: nowrap;
@@ -325,42 +427,37 @@
     .video-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 12px;
       overflow: hidden;
     }
 
     .video-card video {
       width: 100%;
-      max-height: 360px;
+      max-height: 260px;
       display: block;
       background: #000;
     }
 
     .video-footer {
-      padding: 10px 12px;
+      padding: 8px 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--muted);
     }
 
-    .info-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
+    .info-list {
       display: grid;
-      gap: 10px;
+      gap: 8px;
+      font-size: 12.5px;
     }
 
     .info-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
+      gap: 8px;
     }
 
     .info-label {
@@ -372,13 +469,7 @@
       text-align: right;
     }
 
-    .action-links {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 4px;
-    }
-
+    /* Alt səbət paneli */
     .bottom-bar {
       position: fixed;
       bottom: 0;
@@ -411,6 +502,7 @@
       cursor: not-allowed;
     }
 
+    /* Səbət Modalı */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -457,16 +549,6 @@
       padding: 6px 10px;
       font-size: 12px;
       font-weight: 600;
-      cursor: pointer;
-    }
-
-    .close-btn {
-      background: var(--surface-2);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 13px;
       cursor: pointer;
     }
 
@@ -636,11 +718,12 @@
       margin-bottom: 10px;
     }
 
+    /* Şəkil baxış modalı */
     .lightbox {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 50;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 60;
       display: none;
       flex-direction: column;
       justify-content: center;
@@ -676,9 +759,12 @@
 
   <header>
     <div class="header-top">
-      <div class="brand">
-        <h1>VASİF USTANIN DÖNƏRİ</h1>
-        <p>İş saatı: 10:00 – 23:30 • Sürətli çatdırılma</p>
+      <div class="header-left">
+        <button type="button" class="menu-toggle-btn" onclick="toggleDrawer(true)" aria-label="Paneli aç">☰</button>
+        <div class="brand">
+          <h1>VASİF USTANIN DÖNƏRİ</h1>
+          <p>İş saatı: 10:00 – 23:30 • Sürətli çatdırılma</p>
+        </div>
       </div>
       <span class="status-badge open" id="statusBadge">Açıqdır</span>
     </div>
@@ -687,72 +773,77 @@
     </div>
   </header>
 
-  <div class="quick-actions">
-    <a class="quick-btn map" href="https://maps.app.goo.gl/KXqKj9GihhTg2hD98" target="_blank" rel="noopener noreferrer">
-      📍 Məkan (Xəritə)
-    </a>
-    <a class="quick-btn tiktok" href="https://www.tiktok.com/@usta_vasifin_doneri" target="_blank" rel="noopener noreferrer">
-      🎵 TikTok Hesab
-    </a>
-  </div>
-
   <nav class="categories" id="categoryBar"></nav>
 
   <main class="menu-container" id="menuList"></main>
 
-  <section class="extra-section" id="gallerySection">
-    <div class="section-title">
-      <span>Dönərxana Şəkilləri</span>
-      <span class="section-sub">Böyütmək üçün toxunun</span>
+  <!-- Yandan Sürüşməli Panel -->
+  <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleDrawer(false)"></div>
+  <aside class="side-drawer" id="sideDrawer" aria-label="Dönərxana Paneli">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <h2>VASİF USTANIN DÖNƏRİ</h2>
+        <p>Məkan, şəkillər, video və sosial hesab</p>
+      </div>
+      <button type="button" class="close-btn" onclick="toggleDrawer(false)">✕</button>
     </div>
-    <div class="gallery-grid" id="galleryGrid"></div>
-  </section>
 
-  <section class="extra-section" id="videoSection">
-    <div class="section-title">
-      <span>Dönərxana Videosu</span>
-      <span class="section-sub">@usta_vasifin_doneri</span>
+    <div class="drawer-links">
+      <a class="quick-btn map" href="https://maps.app.goo.gl/KXqKj9GihhTg2hD98" target="_blank" rel="noopener noreferrer">
+        📍 Məkan
+      </a>
+      <a class="quick-btn tiktok" href="https://www.tiktok.com/@usta_vasifin_doneri" target="_blank" rel="noopener noreferrer">
+        🎵 TikTok
+      </a>
     </div>
-    <div class="video-card">
-      <video id="shopVideo" controls playsinline preload="metadata" poster="e5eb4bd74774938dfab768594ba99dc8.webp">
-        <source src="f7b17e02c7117a6edcb6a496de2d7674.mp4" type="video/mp4" />
-        Brauzeriniz video oxutmanı dəstəkləmir.
-      </video>
-      <div class="video-footer">
-        <span>Ünvan soruşanlar... Buyurun!</span>
-        <a href="https://www.tiktok.com/@usta_vasifin_doneri" target="_blank" rel="noopener noreferrer" style="color: #ff5c7a; text-decoration: none; font-weight: 700;">TikTok-da bax →</a>
-      </div>
-    </div>
-  </section>
 
-  <section class="extra-section" id="locationSection">
-    <div class="section-title">
-      <span>Ünvan, Məkan və Əlaqə</span>
+    <div class="drawer-block">
+      <div class="drawer-block-title">
+        <span>Dönərxana Şəkilləri</span>
+        <span class="drawer-block-sub">Toxun və böyüt</span>
+      </div>
+      <div class="gallery-grid" id="galleryGrid"></div>
     </div>
-    <div class="info-card">
-      <div class="info-row">
-        <span class="info-label">Obyekt:</span>
-        <span class="info-val">VASİF USTANIN DÖNƏRİ</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">Sifariş nömrəsi:</span>
-        <span class="info-val">+994 50 878 87 49</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">Xəritə linki:</span>
-        <span class="info-val">Google Maps</span>
-      </div>
-      <div class="action-links">
-        <a class="quick-btn map" href="https://maps.app.goo.gl/KXqKj9GihhTg2hD98" target="_blank" rel="noopener noreferrer">
-          🗺️ Xəritədə Aç
-        </a>
-        <a class="quick-btn tiktok" href="https://www.tiktok.com/@usta_vasifin_doneri" target="_blank" rel="noopener noreferrer">
-          🎬 TikTok Keçid
-        </a>
-      </div>
-    </div>
-  </section>
 
+    <div class="drawer-block">
+      <div class="drawer-block-title">
+        <span>Dönərxana Videosu</span>
+        <span class="drawer-block-sub">@usta_vasifin_doneri</span>
+      </div>
+      <div class="video-card">
+        <video id="shopVideo" controls playsinline preload="metadata" poster="e5eb4bd74774938dfab768594ba99dc8.webp">
+          <source src="f7b17e02c7117a6edcb6a496de2d7674.mp4" type="video/mp4" />
+          Brauzeriniz video oxutmanı dəstəkləmir.
+        </video>
+        <div class="video-footer">
+          <span>Ünvan soruşanlar... Buyurun!</span>
+          <a href="https://www.tiktok.com/@usta_vasifin_doneri" target="_blank" rel="noopener noreferrer" style="color: #ff5c7a; text-decoration: none; font-weight: 700;">TikTok →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-block">
+      <div class="drawer-block-title">
+        <span>Ünvan və Əlaqə</span>
+      </div>
+      <div class="info-list">
+        <div class="info-row">
+          <span class="info-label">Sifariş nömrəsi:</span>
+          <span class="info-val">+994 50 878 87 49</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">İş saatları:</span>
+          <span class="info-val">10:00 – 23:30</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Xəritə:</span>
+          <a href="https://maps.app.goo.gl/KXqKj9GihhTg2hD98" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none; font-weight: 700;">Google Maps-də aç →</a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Alt Səbət Paneli -->
   <div class="bottom-bar">
     <button class="open-cart-btn" id="openCartBtn" disabled onclick="toggleCart(true)">
       <span id="barCount">Səbət boşdur</span>
@@ -760,6 +851,7 @@
     </button>
   </div>
 
+  <!-- Səbət Modalı -->
   <div class="modal-backdrop" id="cartModal" onclick="handleBackdrop(event)">
     <div class="cart-sheet">
       <div class="sheet-header">
@@ -837,6 +929,7 @@
     </div>
   </div>
 
+  <!-- Şəkil Baxış Modalı -->
   <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
     <div class="lightbox-bar">
       <span id="lightboxTitle">Şəkil</span>
@@ -907,6 +1000,23 @@
       renderMenu();
       renderGallery();
       updateUI();
+    }
+
+    function toggleDrawer(open) {
+      const drawer = document.getElementById("sideDrawer");
+      const backdrop = document.getElementById("drawerBackdrop");
+      const video = document.getElementById("shopVideo");
+
+      if (open) {
+        drawer.classList.add("open");
+        backdrop.classList.add("open");
+      } else {
+        drawer.classList.remove("open");
+        backdrop.classList.remove("open");
+        if (video && !video.paused) {
+          video.pause();
+        }
+      }
     }
 
     function checkOpenStatus() {
@@ -1260,4 +1370,4 @@
     init();
   </script>
 </body>
-          </html>
+</html>
