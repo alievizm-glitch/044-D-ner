@@ -17,6 +17,7 @@
       --success: #22c55e;
       --danger: #ef4444;
       --info: #3b82f6;
+      --tiktok: #fe2c55;
     }
 
     * {
@@ -30,14 +31,14 @@
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding-bottom: 96px;
+      padding-bottom: 98px;
     }
 
     header {
       position: sticky;
       top: 0;
       z-index: 20;
-      background: rgba(15, 16, 20, 0.94);
+      background: rgba(15, 16, 20, 0.95);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
       padding: 12px 16px;
@@ -48,11 +49,13 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
+      gap: 8px;
     }
 
     .brand h1 {
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
     }
 
     .brand p {
@@ -63,9 +66,10 @@
 
     .status-badge {
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
       padding: 4px 10px;
       border-radius: 999px;
+      white-space: nowrap;
     }
 
     .status-badge.open {
@@ -93,6 +97,39 @@
 
     .search-box input:focus {
       border-color: var(--accent);
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 12px 16px 4px;
+    }
+
+    .quick-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      border-radius: 11px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .quick-btn.map {
+      background: rgba(59, 130, 246, 0.14);
+      color: #60a5fa;
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+
+    .quick-btn.tiktok {
+      background: rgba(254, 44, 85, 0.15);
+      color: #ff5c7a;
+      border-color: rgba(254, 44, 85, 0.38);
     }
 
     .categories {
@@ -126,7 +163,7 @@
     }
 
     .menu-container {
-      padding: 4px 16px 20px;
+      padding: 4px 16px 16px;
       display: grid;
       gap: 12px;
     }
@@ -134,7 +171,7 @@
     .empty-state {
       text-align: center;
       color: var(--muted);
-      padding: 32px 16px;
+      padding: 28px 16px;
       font-size: 14px;
     }
 
@@ -183,10 +220,6 @@
       color: var(--muted);
       line-height: 1.35;
       margin-bottom: 6px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
     }
 
     .item-bottom {
@@ -236,6 +269,114 @@
       text-align: center;
       font-size: 13px;
       font-weight: 700;
+    }
+
+    .extra-section {
+      padding: 8px 16px 14px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-sub {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .gallery-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: 112px;
+      object-fit: cover;
+      display: block;
+      background: var(--surface-2);
+    }
+
+    .gallery-caption {
+      padding: 6px 8px;
+      font-size: 11px;
+      color: var(--text);
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .video-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .video-card video {
+      width: 100%;
+      max-height: 360px;
+      display: block;
+      background: #000;
+    }
+
+    .video-footer {
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .info-label {
+      color: var(--muted);
+    }
+
+    .info-val {
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .action-links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 4px;
     }
 
     .bottom-bar {
@@ -494,6 +635,41 @@
       line-height: 1.45;
       margin-bottom: 10px;
     }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 50;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      gap: 12px;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: 100%;
+      max-height: 75vh;
+      border-radius: 14px;
+      object-fit: contain;
+    }
+
+    .lightbox-bar {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -502,7 +678,7 @@
     <div class="header-top">
       <div class="brand">
         <h1>VASİF USTANIN DÖNƏRİ</h1>
-        <p>İş saatı: 10:00 – 23:30 • 30-40 dəq</p>
+        <p>İş saatı: 10:00 – 23:30 • Sürətli çatdırılma</p>
       </div>
       <span class="status-badge open" id="statusBadge">Açıqdır</span>
     </div>
@@ -511,9 +687,71 @@
     </div>
   </header>
 
+  <div class="quick-actions">
+    <a class="quick-btn map" href="https://maps.app.goo.gl/KXqKj9GihhTg2hD98" target="_blank" rel="noopener noreferrer">
+      📍 Məkan (Xəritə)
+    </a>
+    <a class="quick-btn tiktok" href="https://www.tiktok.com/@usta_vasifin_doneri" target="_blank" rel="noopener noreferrer">
+      🎵 TikTok Hesab
+    </a>
+  </div>
+
   <nav class="categories" id="categoryBar"></nav>
 
   <main class="menu-container" id="menuList"></main>
+
+  <section class="extra-section" id="gallerySection">
+    <div class="section-title">
+      <span>Dönərxana Şəkilləri</span>
+      <span class="section-sub">Böyütmək üçün toxunun</span>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </section>
+
+  <section class="extra-section" id="videoSection">
+    <div class="section-title">
+      <span>Dönərxana Videosu</span>
+      <span class="section-sub">@usta_vasifin_doneri</span>
+    </div>
+    <div class="video-card">
+      <video id="shopVideo" controls playsinline preload="metadata" poster="e5eb4bd74774938dfab768594ba99dc8.webp">
+        <source src="f7b17e02c7117a6edcb6a496de2d7674.mp4" type="video/mp4" />
+        Brauzeriniz video oxutmanı dəstəkləmir.
+      </video>
+      <div class="video-footer">
+        <span>Ünvan soruşanlar... Buyurun!</span>
+        <a href="https://www.tiktok.com/@usta_vasifin_doneri" target="_blank" rel="noopener noreferrer" style="color: #ff5c7a; text-decoration: none; font-weight: 700;">TikTok-da bax →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="extra-section" id="locationSection">
+    <div class="section-title">
+      <span>Ünvan, Məkan və Əlaqə</span>
+    </div>
+    <div class="info-card">
+      <div class="info-row">
+        <span class="info-label">Obyekt:</span>
+        <span class="info-val">VASİF USTANIN DÖNƏRİ</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Sifariş nömrəsi:</span>
+        <span class="info-val">+994 50 878 87 49</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Xəritə linki:</span>
+        <span class="info-val">Google Maps</span>
+      </div>
+      <div class="action-links">
+        <a class="quick-btn map" href="https://maps.app.goo.gl/KXqKj9GihhTg2hD98" target="_blank" rel="noopener noreferrer">
+          🗺️ Xəritədə Aç
+        </a>
+        <a class="quick-btn tiktok" href="https://www.tiktok.com/@usta_vasifin_doneri" target="_blank" rel="noopener noreferrer">
+          🎬 TikTok Keçid
+        </a>
+      </div>
+    </div>
+  </section>
 
   <div class="bottom-bar">
     <button class="open-cart-btn" id="openCartBtn" disabled onclick="toggleCart(true)">
@@ -599,9 +837,20 @@
     </div>
   </div>
 
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <div class="lightbox-bar">
+      <span id="lightboxTitle">Şəkil</span>
+      <button class="close-btn" onclick="closeLightbox(event, true)">Bağla</button>
+    </div>
+    <img id="lightboxImg" src="" alt="Dönərxana şəkli" />
+  </div>
+
   <script>
     const SHOP_NAME = "VASİF USTANIN DÖNƏRİ";
     const RESTAURANT_PHONE = "994508788749";
+    const SHOP_MAP_URL = "https://maps.app.goo.gl/KXqKj9GihhTg2hD98";
+    const TIKTOK_URL = "https://www.tiktok.com/@usta_vasifin_doneri";
+
     const FREE_DELIVERY_LIMIT = 15.0;
     const DELIVERY_FEE = 2.0;
     const OPEN_HOUR = 10;
@@ -612,10 +861,37 @@
 
     const FALLBACK_IMG = "https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=300&q=70";
 
+    const GALLERY_DATA = [
+      { title: "Dönərxana içi", src: "15222d814a9e1602f6f2581a397256e6.webp" },
+      { title: "Obyekt fasadı", src: "e5eb4bd74774938dfab768594ba99dc8.webp" },
+      { title: "Usta iş başında", src: "84808838936249267d82066ab6e8b571.webp" }
+    ];
+
     const menuData = [
-      { id: 1, category: "Dönərlər", name: "Toyuq Dönər Çörək", desc: "Təzə çörəkdə toyuq dönər, tərəvəz və sous", price: 2.00, img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=300&q=70" },
-      { id: 2, category: "Dönərlər", name: "Limuzin Dönər", desc: "Xüsusi limuzin formatında ləzzətli dönər", price: 3.00, img: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=300&q=70" },
-      { id: 3, category: "İçkilər", name: "Ayran", desc: "Soyuq və təravətləndirici ayran", price: 1.00, img: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=300&q=70" }
+      {
+        id: 1,
+        category: "Dönərlər",
+        name: "Toyuq Dönər Çörək",
+        desc: "Təzə çörəkdə toyuq dönər, tərəvəz və sous",
+        price: 2.00,
+        img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=300&q=70"
+      },
+      {
+        id: 2,
+        category: "Dönərlər",
+        name: "Limuzin Dönər",
+        desc: "Xüsusi limuzin formatında ləzzətli dönər",
+        price: 3.00,
+        img: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=300&q=70"
+      },
+      {
+        id: 3,
+        category: "İçkilər",
+        name: "Ayran",
+        desc: "Soyuq və təravətləndirici ayran",
+        price: 1.00,
+        img: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=300&q=70"
+      }
     ];
 
     let activeCategory = "Hamısı";
@@ -629,6 +905,7 @@
       restoreCustomerInfo();
       renderCategories();
       renderMenu();
+      renderGallery();
       updateUI();
     }
 
@@ -716,6 +993,30 @@
           </div>
         `;
       }).join("");
+    }
+
+    function renderGallery() {
+      const grid = document.getElementById("galleryGrid");
+      grid.innerHTML = GALLERY_DATA.map((pic, idx) => `
+        <div class="gallery-card" onclick="openLightbox(${idx})">
+          <img src="${pic.src}" alt="${pic.title}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'" />
+          <div class="gallery-caption">${pic.title}</div>
+        </div>
+      `).join("");
+    }
+
+    function openLightbox(idx) {
+      const pic = GALLERY_DATA[idx];
+      if (!pic) return;
+      document.getElementById("lightboxTitle").textContent = pic.title;
+      document.getElementById("lightboxImg").src = pic.src;
+      document.getElementById("lightbox").classList.add("open");
+    }
+
+    function closeLightbox(e, force = false) {
+      if (force || e.target.id === "lightbox") {
+        document.getElementById("lightbox").classList.remove("open");
+      }
     }
 
     function changeQty(id, delta) {
@@ -862,7 +1163,7 @@
         .join("\n");
 
       const deliveryInfo = isPickup
-        ? "Sifariş növü: Özüm gəlib götürəcəyəm"
+        ? `Sifariş növü: Özüm gəlib götürəcəyəm\nDönərxana ünvanı: ${SHOP_MAP_URL}`
         : `Ünvan: ${address || "GPS ilə göndərilib"}${gpsLink ? `\nXəritə (GPS): ${gpsLink}` : ""}`;
 
       return (
@@ -959,4 +1260,4 @@
     init();
   </script>
 </body>
-</html> ü
+          </html>
