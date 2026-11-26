@@ -441,6 +441,11 @@
       cursor: pointer;
     }
 
+    .confirm-btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
     .wa-secondary-btn {
       width: 100%;
       background: rgba(34, 197, 94, 0.14);
@@ -468,10 +473,19 @@
       display: block;
     }
 
+    .success-box.error {
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+
     .success-box h4 {
       color: var(--success);
       font-size: 16px;
       margin-bottom: 6px;
+    }
+
+    .success-box.error h4 {
+      color: var(--danger);
     }
 
     .success-box p {
@@ -575,14 +589,11 @@
         <input type="text" id="custNote" placeholder="Məs: Acılı olsun, soğan az olsun..." />
       </div>
 
-      <!-- Müştəri tətbiqdən çıxmadan sifarişi təsdiqləyir -->
-      <button class="confirm-btn" id="confirmOrderBtn" onclick="confirmOrderInApp()">✓ Sifarişi Təsdiqlə</button>
-
-      <!-- İstəyə bağlı olaraq birbaşa WhatsApp açmaq üçün -->
+      <button class="confirm-btn" id="confirmOrderBtn" onclick="confirmOrderInApp()">✓ Sifarişi Təsdiqlə (Avtomatik Göndər)</button>
       <button class="wa-secondary-btn" onclick="openWhatsAppOrder()">WhatsApp ilə Göndər (+994516162691)</button>
 
       <div class="success-box" id="successBox">
-        <h4>Sifarişiniz Təsdiqləndi!</h4>
+        <h4 id="successTitle">Sifarişiniz Təsdiqləndi!</h4>
         <p id="successDetails"></p>
       </div>
     </div>
@@ -595,11 +606,10 @@
     const OPEN_HOUR = 10;
     const CLOSE_HOUR = 23.5;
 
-    // İstəsən Telegram bot məlumatlarını bura əlavə edib arxa planda avtomatik bildiriş ala bilərsən
-    const TELEGRAM_BOT_TOKEN = ""; // Məs: "123456:ABC-DEF..."
-    const TELEGRAM_CHAT_ID = "";   // Məs: "987654321"
+    // Telegram Bot Token və Chat ID əlavə edildi
+    const TELEGRAM_BOT_TOKEN = "9217391584:AAFbLEE63heDqC_PZRs4hrCSh8PBIlSdA_4";
+    const TELEGRAM_CHAT_ID = "8914582993";
 
-    // Ehtiyat şəkil (link yüklənmədikdə boş qalmaması üçün)
     const FALLBACK_IMG = "https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=300&q=70";
 
     const menuData = [
@@ -872,13 +882,13 @@
         : `Ünvan: ${address || "GPS ilə göndərilib"}${gpsLink ? `\nXəritə (GPS): ${gpsLink}` : ""}`;
 
       return (
-        `*YENİ SİFARİŞ (${orderCode})*\n` +
+        `YENİ SİFARİŞ (${orderCode})\n` +
         `------------------------\n` +
         `${orderLines}\n` +
         `------------------------\n` +
         `Məhsullar: ${subTotal.toFixed(2)} AZN\n` +
         `Çatdırılma: ${delivery === 0 ? "Pulsuz" : delivery.toFixed(2) + " AZN"}\n` +
-        `*Yekun: ${grandTotal.toFixed(2)} AZN*\n` +
+        `Yekun: ${grandTotal.toFixed(2)} AZN\n` +
         `Ödəniş: ${payment}\n` +
         `------------------------\n` +
         `Müştəri: ${name}\n` +
@@ -908,37 +918,50 @@
     async function confirmOrderInApp() {
       if (!validateForm()) return;
 
+      const btn = document.getElementById("confirmOrderBtn");
+      const successBox = document.getElementById("successBox");
+      const successTitle = document.getElementById("successTitle");
+      const successDetails = document.getElementById("successDetails");
+
       const orderCode = "#" + Math.floor(1000 + Math.random() * 9000);
       const message = buildOrderMessage(orderCode);
       lastOrderText = message;
 
-      // Əgər Telegram bot quraşdırılıbsa, brauzeri tərk etmədən arxa planda göndərir
-      if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
-        try {
-          await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              chat_id: TELEGRAM_CHAT_ID,
-              text: message
-            })
-          });
-        } catch (err) {
-          console.log("Telegram göndəriş xətası:", err);
+      btn.disabled = true;
+      btn.textContent = "Göndərilir...";
+
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: message
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.ok) {
+          const { grandTotal } = getCartStats();
+          successBox.className = "success-box show";
+          successTitle.textContent = "Sifarişiniz Təsdiqləndi!";
+          successDetails.innerHTML =
+            `Sifariş kodunuz: <strong>${orderCode}</strong><br>` +
+            `Yekun məbləğ: <strong>${grandTotal.toFixed(2)} AZN</strong><br>` +
+            `Sifarişiniz birbaşa bizə çatdırıldı. Qısa zamanda hazırlanacaq.`;
+          btn.textContent = "✓ Sifariş Təsdiqləndi";
+        } else {
+          throw new Error(data.description || "Telegram göndəriş xətası");
         }
+      } catch (err) {
+        successBox.className = "success-box show error";
+        successTitle.textContent = "Göndəriş Alınmadı";
+        successDetails.innerHTML =
+          "Telegram botunuza əvvəlcə <strong>/start</strong> yazdığınızdan və internet bağlantısından əmin olun.";
+        btn.disabled = false;
+        btn.textContent = "✓ Sifarişi Təsdiqlə (Avtomatik Göndər)";
       }
-
-      const { grandTotal } = getCartStats();
-      const successBox = document.getElementById("successBox");
-      const successDetails = document.getElementById("successDetails");
-
-      successDetails.innerHTML =
-        `Sifariş kodunuz: <strong>${orderCode}</strong><br>` +
-        `Yekun məbləğ: <strong>${grandTotal.toFixed(2)} AZN</strong><br>` +
-        `Sifarişiniz qeydə alındı. Qısa zamanda sizinlə əlaqə saxlanılacaq.`;
-
-      successBox.classList.add("show");
-      document.getElementById("confirmOrderBtn").textContent = "✓ Sifariş Təsdiqləndi";
     }
 
     function openWhatsAppOrder() {
